@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-//view users
+// view users
 router.get("/", async (req, res) => {
   try {
     const users = await User.find();
@@ -47,6 +47,27 @@ router.get("/:id", async (req, res) => {
     const user = await User.findOne({ _id: id });
     if (!user) {
       res.status(422).json({ error: "User nao encontrado" });
+      return;
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+});
+
+//Login
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  const user = { username, password };
+
+  try {
+    const userVerify = await User.findOne({
+      username: username,
+      password: password,
+    });
+    if (!userVerify) {
+      res.status(422).json({ error: "Dados incorretos" });
       return;
     }
     res.status(200).json(user);
