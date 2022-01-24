@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 
-const Note = mongoose.model("Note", {
-  title: String,
-  text: String,
-  user: String,
-});
+const noteSchema = mongoose.Schema(
+  {
+    title: String,
+    text: String,
+    username: String,
+  },
+  { timestamps: true }
+);
 
+const Note = mongoose.model("Note", noteSchema);
 module.exports = Note;

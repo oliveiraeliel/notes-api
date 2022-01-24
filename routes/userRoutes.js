@@ -2,7 +2,7 @@ const router = require("express").Router();
 const User = require("../models/User");
 
 //create user
-router.post("/", async (req, res) => {
+router.post("/sign-up", async (req, res) => {
   const { username, password } = req.body;
 
   if (!username) {
