@@ -1,18 +1,20 @@
 const router = require("express").Router();
 const User = require("../models/User");
+const md5 = require("md5");
 
 //create user
 router.post("/sign-up", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, passwordNotEncrypted } = req.body;
 
   if (!username) {
     res.status(422).json({ error: "Username obrigatorio" });
     return;
   }
-  if (!password) {
+  if (!passwordNotEncrypted) {
     res.status(422).json({ error: "Password obrigatorio" });
     return;
   }
+  const password = md5(passwordNotEncrypted);
 
   const user = { username, password };
   const userVerify = await User.findOne({ username: username });
@@ -57,7 +59,9 @@ router.get("/:id", async (req, res) => {
 
 //Login
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, passwordNotEncrypted } = req.body;
+
+  const password = md5(passwordNotEncrypted);
 
   const user = { username, password };
 
